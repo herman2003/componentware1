@@ -11,15 +11,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.Random;
 
 @AllArgsConstructor
 @Service
-public class SensorsenderService {
+public class SensorSenderService {
     @Autowired
     private SensorSenderRepository sensorSenderRepository;
-
     @Autowired
     private NachrichtRepository nachrichtRepository;
     @Autowired
