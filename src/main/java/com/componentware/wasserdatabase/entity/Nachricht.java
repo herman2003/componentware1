@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 
 @Builder
 @Entity
-@AllArgsConstructor  //generaze un contructeur de maniere automatique sans ecrire
+@AllArgsConstructor
 @NoArgsConstructor
 @Table(name="Nachricht")
 public class Nachricht {

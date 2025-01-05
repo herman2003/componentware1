@@ -21,8 +21,8 @@ public class WasserdatabaseApplication implements CommandLineRunner {
 	}
 	@Override
 	public void run(String... args) throws Exception {
-		sensorsenderService.generateAndSendData();
 		dataInitializationProduktService.run();
+		sensorsenderService.generateAndSendData();
 		logistikService.setupMqttListener();
 	}
 }

@@ -2,8 +2,10 @@ package com.componentware.wasserdatabase.service;
 
 import com.componentware.wasserdatabase.Mqtt.MqttService;
 import com.componentware.wasserdatabase.entity.Nachricht;
+import com.componentware.wasserdatabase.entity.Sensor;
 import com.componentware.wasserdatabase.entity.SensorSender;
 import com.componentware.wasserdatabase.repository.NachrichtRepository;
+import com.componentware.wasserdatabase.repository.SensorRepository;
 import com.componentware.wasserdatabase.repository.SensorSenderRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,8 @@ public class SensorSenderService {
     @Autowired
     private SensorSenderRepository sensorSenderRepository;
     @Autowired
+    private SensorRepository sensorRepository;
+    @Autowired
     private NachrichtRepository nachrichtRepository;
     @Autowired
     private MqttService mqttService;
@@ -27,8 +31,10 @@ public class SensorSenderService {
             Random random = new Random();
             float minimalStand=20;
             String location="Location1";
+            // load first sensor
+        Sensor sensor =sensorRepository.getFirstById(31L);
             // insert new sensorsender
-            SensorSender sensorSender = new SensorSender(location,minimalStand);
+            SensorSender sensorSender = new SensorSender(location,minimalStand,sensor);
             sensorSenderRepository.save(sensorSender);
 
             new Thread(() -> {

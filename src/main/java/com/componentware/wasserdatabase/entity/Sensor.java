@@ -10,26 +10,18 @@ import lombok.NoArgsConstructor;
 @DiscriminatorValue("SENSOR")
 public class Sensor extends Produkt {
   private String Nr;
-  String form;
-  public Sensor(String name, double preis, String nr,long wasserStand, String form) {
-      super(name, preis);
-      this.Nr = nr;
 
-      this.form = form;
+  public Sensor(String name, double preis) {
+      super(name, preis);
+
+
   }
     public Sensor() {
         super();
     }
   @Override
   public String toString() {
-      return super.toString() + ", mit der Seriennummer :" + Nr +  ", form: " + form;
+      return super.toString() ;
   }
 
-    public String getNr() {
-        return Nr;
-    }
-
-    public String getForm() {
-        return form;
-    }
 }

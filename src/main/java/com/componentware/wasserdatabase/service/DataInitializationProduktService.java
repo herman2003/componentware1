@@ -33,17 +33,15 @@ public class DataInitializationProduktService implements CommandLineRunner {
         // Insérer 30 objets Container
         for (int i = 1; i <= 30; i++) {
             double volume = 50.0 + random.nextDouble() * 150.0; // Volume entre 50 et 200
-            Container container = new Container("Container" + i, 100.0 + random.nextDouble() * 50.0, volume);
+            String form = (i % 2 == 0) ? "Rectangular" : "Circular"; // Forme alternée entre Rectangular et Circular
+            Container container = new Container("Container" + i, 100.0 + random.nextDouble() * 50.0, volume,form);
             containerRepository.save(container);
             System.out.println("Container inséré : " + container);
         }
 
         // Insérer 30 objets Sensor
         for (int i = 1; i <= 30; i++) {
-            String nr = "S" + (1000 + i); // Numéro de série
-            long wasserStand = 50 + random.nextInt(150); // Wasserstand entre 50 et 200
-            String form = (i % 2 == 0) ? "Rectangular" : "Circular"; // Forme alternée entre Rectangular et Circular
-            Sensor sensor = new Sensor("Sensor" + i, 200.0 + random.nextDouble() * 100.0, nr, wasserStand, form);
+            Sensor sensor = new Sensor("Sensor" + i, 200.0 + random.nextDouble() * 100.0);
             sensorRepository.save(sensor);
             System.out.println("Sensor inséré : " + sensor);
         }

@@ -18,7 +18,9 @@ public class SensorSender {
 	private String location;
 	@Column
 	private float minimalStand;
-
+	@ManyToOne
+	@JoinColumn(name = "sensor_id", nullable = true)
+	private Sensor sensor;
 	//private LocalDateTime timestamp;
 	//private String info;
 	//private String type;
@@ -26,9 +28,10 @@ public class SensorSender {
 //	// One-to-Many relationship with Nachricht
 //	@OneToMany(mappedBy = "sensorsender", cascade = CascadeType.ALL, orphanRemoval = true)
 //	private List<Nachricht> nachrichten = new ArrayList<>();
-public SensorSender( String location, float minimalStand) {
+public SensorSender( String location, float minimalStand,Sensor sensor) {
 	this.location = location;
 	this.minimalStand = minimalStand;
+	this.sensor = sensor;
 }
 
 	public Long getId() {
