@@ -80,4 +80,11 @@ public class SenderService {
     public List<Sender> findSendersByUser(User user) {
         return senderRepository.findSendersByUser(user); // Appel au repository pour récupérer les senders
     }
+    public void deleteSender(Long senderId) {
+        if (senderRepository.existsById(Math.toIntExact(senderId))) {
+            senderRepository.deleteById(Math.toIntExact(senderId));
+        } else {
+            throw new RuntimeException("Sender non trouvé avec l'id: " + senderId);
+        }
+    }
 }

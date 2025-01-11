@@ -30,7 +30,7 @@ public class AuftragController {
         }
     }
     @GetMapping("/user/{userId}")
-    public List<Auftrag> getAuftrageByUser(@PathVariable Long userId) {
+    public List<Auftrag> getAuftrageByUser(@PathVariable Long userId) {//bagination von webpage
         return auftragService.getAuftragByUserId(userId);
     }
     @GetMapping("/type/{type}")

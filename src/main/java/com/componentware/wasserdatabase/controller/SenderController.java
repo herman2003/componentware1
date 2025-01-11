@@ -32,4 +32,9 @@ public class SenderController {
     public Sender addSenderToUser(@PathVariable Long userId, @RequestBody Sender sender) {
         return senderService.addSenderToUser(userId, sender);
     }
+    @DeleteMapping("/delete/{senderId}")
+    public String deleteSender(@PathVariable Long senderId) {
+        senderService.deleteSender(senderId);
+        return "Sender supprimé avec succès, ID: " + senderId;
+    }
 }

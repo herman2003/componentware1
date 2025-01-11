@@ -32,7 +32,6 @@ public class NachrichtController {
         return nachrichten;
     }
 
-
     @PostMapping("/process")
     public String processAuftrag(@RequestBody Auftrag auftrag) {
         if (auftrag.getType().equals(AuftragType.TRANSPORT.name())) {
