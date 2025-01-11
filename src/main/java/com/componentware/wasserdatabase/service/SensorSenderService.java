@@ -1,70 +1,70 @@
 package com.componentware.wasserdatabase.service;
 
 import com.componentware.wasserdatabase.Mqtt.MqttService;
-import com.componentware.wasserdatabase.entity.Nachricht;
-import com.componentware.wasserdatabase.entity.Sensor;
-import com.componentware.wasserdatabase.entity.SensorSender;
-import com.componentware.wasserdatabase.repository.NachrichtRepository;
-import com.componentware.wasserdatabase.repository.SensorRepository;
-import com.componentware.wasserdatabase.repository.SensorSenderRepository;
+import com.componentware.wasserdatabase.entity.*;
+import com.componentware.wasserdatabase.repository.*;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Random;
 
 @AllArgsConstructor
 @Service
 public class SensorSenderService {
+
     @Autowired
-    private SensorSenderRepository sensorSenderRepository;
-    @Autowired
-    private SensorRepository sensorRepository;
+    private SenderRepository senderRepository;
     @Autowired
     private NachrichtRepository nachrichtRepository;
     @Autowired
     private MqttService mqttService;
-    @Transactional
-        public void generateAndSendData() {
-            Random random = new Random();
-            float minimalStand=20;
-            String location="Location1";
-            // load first sensor
-        Sensor sensor =sensorRepository.getFirstById(31L);
-            // insert new sensorsender
-            SensorSender sensorSender = new SensorSender(location,minimalStand,sensor);
-            sensorSenderRepository.save(sensorSender);
+    @Autowired
+    private UserRepository userRepository;
 
+    @Transactional
+    public void generateAndSendData() {
+        Random random = new Random();
+
+
+
+        // Récupérer un utilisateur existant
+        User defaultUser = userRepository.findByEmail("admin@example.com");
+        if (defaultUser == null) {
+            throw new RuntimeException("Aucun utilisateur trouvé. Veuillez initialiser un utilisateur.");
+        }
+
+        // Récupérer tous les senders de l'utilisateur
+        List<Sender> senders = senderRepository.findSendersByUser(defaultUser);
+
+        // Pour chaque Sender, démarrer un thread pour générer et envoyer des données
+        for (Sender sender : senders) {
             new Thread(() -> {
                 while (true) {
-                    float wasserstand=random.nextFloat(0,200);
+                    float wasserstand = random.nextFloat(0, 200);
                     try {
-                        //insert new message
-                        String status="";
-                        if(wasserstand>=minimalStand){
-                       status="OK";
-                        }else{
-                            System.out.println("WARNUNG: Wasserstand ist kritisch niedrig: " + wasserstand + " cm");
-                            status="wasserstand ausfuellen";
-                        }
-String info="Sensor ID: " + sensorSender.getId() + " - Location: "+sensorSender.getLocation()+ " - Wasserstand: " + wasserstand+ " - MinimalStand: " + sensorSender.getMinimalStand()+ " - Status: " + status;
-                        Nachricht nachricht = new Nachricht(LocalDateTime.now(), status,info,sensorSender,wasserstand);
+                        String status = wasserstand >= sender.getMinimalStand() ? "OK" : "Wasserstand auffüllen";
+                        String info = "Sender ID: " + sender.getId() + " - Location: " + sender.getLocation() +
+                                " - Wasserstand: " + wasserstand + " - MinimalStand: " + sender.getMinimalStand() +
+                                " - Status: " + status;
+
+                        Nachricht nachricht = new Nachricht(LocalDateTime.now(), status, info, sender, wasserstand);
 
                         // Sauvegarder le message dans la base de données
                         nachrichtRepository.save(nachricht);
 
-                        // Créer et envoyer le message MQTT
+                        // Envoyer via MQTT
                         mqttService.publish(nachricht.getInfo());
 
-                        // Attendre 1 seconde avant de générer la prochaine mesure
                         Thread.sleep(1000);
                     } catch (InterruptedException e) {
-                        System.err.println("Ungültiges Payload-Format: " +minimalStand );
                         e.printStackTrace();
                     }
                 }
             }).start();
         }
+    }
 }

@@ -5,24 +5,43 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+
 @Setter
 @NoArgsConstructor
 @Entity
 @Table(name="Auftrag")
 public class Auftrag {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Column
-    String info;
+    private String info;
+
     @Column
-    String status;
+    private String status;
+
     @Column
-    String type;
+    private String type;
+
     @Column
-    LocalDateTime date;
+    private LocalDateTime date;
+
     @Column
-    float preis;
+    private float preis;
+
+    // Relation Many-to-One avec User (Un user peut avoir plusieurs Aufträge)
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
+    // Relation Many-to-One avec Sender (Un Sender peut avoir plusieurs Aufträge)
+    @ManyToOne
+    @JoinColumn(name = "sender_id", nullable = false)
+    private Sender sender;
+
+    // Getters et Setters
     public Long getId() {
         return id;
     }
@@ -42,6 +61,7 @@ public class Auftrag {
     public LocalDateTime getDate() {
         return date;
     }
+
     public float getPreis() {
         return preis;
     }
@@ -68,5 +88,21 @@ public class Auftrag {
 
     public void setDate(LocalDateTime date) {
         this.date = date;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Sender getSender() {
+        return sender;
+    }
+
+    public void setSender(Sender sender) {
+        this.sender = sender;
     }
 }
