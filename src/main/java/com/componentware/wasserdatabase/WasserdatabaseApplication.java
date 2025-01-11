@@ -10,7 +10,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class WasserdatabaseApplication implements CommandLineRunner {
 
 	@Autowired
-	private SensorSenderService sensorsenderService;
+	private SenderService sensorsenderService;
 
 	@Autowired
 	private LogistikService logistikService;

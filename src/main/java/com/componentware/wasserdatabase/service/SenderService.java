@@ -14,7 +14,7 @@ import java.util.Random;
 
 @AllArgsConstructor
 @Service
-public class SensorSenderService {
+public class SenderService {
 
     @Autowired
     private SenderRepository senderRepository;
@@ -66,5 +66,18 @@ public class SensorSenderService {
                 }
             }).start();
         }
+    }
+    public Sender addSenderToUser(Long userId, Sender sender) {
+        // Vérifier si l'utilisateur existe
+        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("Utilisateur introuvable"));
+
+        // Associer l'utilisateur au sender
+        sender.setUser(user);
+
+        // Sauvegarder le sender
+        return senderRepository.save(sender);
+    }
+    public List<Sender> findSendersByUser(User user) {
+        return senderRepository.findSendersByUser(user); // Appel au repository pour récupérer les senders
     }
 }

@@ -3,12 +3,10 @@ package com.componentware.wasserdatabase.controller;
 import com.componentware.wasserdatabase.entity.Sender;
 import com.componentware.wasserdatabase.entity.User;
 import com.componentware.wasserdatabase.repository.SenderRepository;
+import com.componentware.wasserdatabase.service.SenderService;
 import com.componentware.wasserdatabase.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -16,8 +14,7 @@ import java.util.List;
 @RequestMapping("/api/sender")
 public class SenderController {
     @Autowired
-    private SenderRepository senderRepository; // Le repository pour les senders
-
+    private SenderService senderService;
     @Autowired
     private UserService userService;
     @GetMapping("/user/{email}")
@@ -29,7 +26,10 @@ public class SenderController {
         }
 
         // Récupérer tous les senders associés à l'utilisateur
-        List<Sender> senders = senderRepository.findSendersByUser(user); // Méthode dans SenderRepository
-        return senders;
+        return senderService.findSendersByUser(user);
+    }
+    @PostMapping("/add/{userId}")
+    public Sender addSenderToUser(@PathVariable Long userId, @RequestBody Sender sender) {
+        return senderService.addSenderToUser(userId, sender);
     }
 }
