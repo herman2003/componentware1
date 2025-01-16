@@ -7,6 +7,8 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.function.Consumer;
 
 @Service
@@ -20,6 +22,7 @@ public class MqttService {
 
     private MqttClient client;
     private Consumer<String> messageHandler;
+    private BlockingQueue<String> messageQueue = new LinkedBlockingQueue<>();
 
     @PostConstruct
     public void initialize() {
@@ -89,7 +92,8 @@ public class MqttService {
     public void publish(String messageContent) {
         try {
             if (client == null || !client.isConnected()) {
-                initialize();  // Assurez-vous que la connexion est établie
+                System.out.println("Client non connecté, tentative de reconnexion...");
+                initialize();  // Réinitialiser la connexion
             }
 
             MqttMessage message = new MqttMessage(messageContent.getBytes());
@@ -98,11 +102,24 @@ public class MqttService {
 
             System.out.println("Message publié : " + messageContent);
         } catch (MqttException e) {
-            System.err.println("Erreur lors de la publication du message : " + e.getMessage());
-            e.printStackTrace();
+            if (e.getReasonCode() == MqttException.REASON_CODE_MAX_INFLIGHT) {
+                System.err.println("Erreur : Trop de publications en cours. Réessayer...");
+                retryPublish(messageContent); // Réessayer de publier
+            } else {
+                System.err.println("Erreur lors de la publication du message : " + e.getMessage());
+                e.printStackTrace();
+            }
         }
     }
-
+    private void retryPublish(String messageContent) {
+        try {
+            Thread.sleep(120000);  // Attendre 500 ms avant de réessayer
+            publish(messageContent);  // Réessayer de publier le message
+        } catch (InterruptedException e) {
+            System.err.println("Le délai de réessai a été interrompu.");
+            Thread.currentThread().interrupt(); // Réinterrompre le thread
+        }
+    }
     // Setter pour définir le handler des messages MQTT
     public void setMessageHandler(Consumer<String> messageHandler) {
         this.messageHandler = messageHandler;
