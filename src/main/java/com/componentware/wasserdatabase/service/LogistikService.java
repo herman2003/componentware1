@@ -101,11 +101,17 @@ public class LogistikService {
             newAuftrag.setSender(sender); // Associer le Sender
 
             auftragRepository.save(newAuftrag);
+            try {
+                System.out.println("Pause von 1 Minuten");
+                Thread.sleep(60 * 3000); // 60 000 ms = 1 minute
+            } catch (InterruptedException e) {
+                System.err.println("Problem mit der Pause von 1 MInuten" + e.getMessage());
+                Thread.currentThread().interrupt(); // Réinterrompre le thread si nécessaire
+            }
             transportService.auftragsberarbeiten(newAuftrag);
-            System.out.println("Nouvel Auftrag créé avec le statut 'in process' : " + newAuftrag);
 
         } catch (Exception e) {
-            System.err.println("Erreur lors du traitement du message MQTT : " + e.getMessage());
+            System.err.println("Fehler bei Bearbeitung von Nachricht MQTT : " + e.getMessage());
             e.printStackTrace();
         }
     }
