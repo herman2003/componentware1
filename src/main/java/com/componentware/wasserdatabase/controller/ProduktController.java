@@ -8,6 +8,8 @@ import com.componentware.wasserdatabase.service.TransportService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/produkt")
 public class ProduktController {
@@ -51,6 +53,11 @@ public String deleteProdukt(@PathVariable Long id) {
 @GetMapping("/{id}")
 public Produkt getProduktById(@PathVariable Long id) {
     return produktService.getProduktById(id);
+}
+// Récupérer un produit par ID
+@GetMapping("/allprodukt")
+public List<Produkt> getAllProdukt() {
+    return produktService.getAllProdukt();
 }}
 //ajouter une methode pour ajouter,supprimer,modifier un product en fonction du id
 

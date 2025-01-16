@@ -5,6 +5,7 @@ import com.componentware.wasserdatabase.repository.ProduktRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -45,5 +46,8 @@ public class ProduktService {
         return produktRepository.findById(id).orElseThrow(() ->
                 new RuntimeException("Produkt non trouvé avec l'id: " + id)
         );
+    }
+    public List<Produkt> getAllProdukt() {
+        return produktRepository.findAll();
     }
 }

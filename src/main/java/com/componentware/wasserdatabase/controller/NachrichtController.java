@@ -20,7 +20,7 @@ public class NachrichtController {
     private TransportService transportService;
     // Récupérer toutes les Nachrichten associées à un Sender par son ID
     @GetMapping("/sender/{senderId}")
-    public List<Nachricht> getNachrichtenBySender(@PathVariable(required = false) Long senderId) {
+    public Nachricht getNachrichtenBySender(@PathVariable(required = false) Long senderId) {
         if (senderId == null) {
             senderId = 1L;
         }
@@ -31,8 +31,9 @@ public class NachrichtController {
         // Utiliser le service pour récupérer les Nachrichten liées à ce Sender
         List<Nachricht> nachrichten = nachrichtService.findBySender(sender);
 
+
         // Retourner la liste des Nachrichten
-        return nachrichten;
+        return nachrichten.stream().findFirst().orElse(null);
     }
 
     @PostMapping("/process")
