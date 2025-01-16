@@ -23,6 +23,10 @@ public class MqttService {
 
     @PostConstruct
     public void initialize() {
+        connectMqttClient();
+    }
+
+    private void connectMqttClient() {
         try {
             client = new MqttClient(brokerUrl, MqttClient.generateClientId());
             client.connect();
@@ -34,18 +38,18 @@ public class MqttService {
             client.setCallback(new org.eclipse.paho.client.mqttv3.MqttCallback() {
                 @Override
                 public void connectionLost(Throwable cause) {
-                    System.err.println("La connexion au broker MQTT a été perdue.");
+                    System.err.println("Connexion au broker MQTT perdue");
                     cause.printStackTrace();
+                    reconnect();
                 }
 
                 @Override
                 public void messageArrived(String receivedTopic, MqttMessage message) {
-                    // Récupérer le payload et appeler le handler pour traiter le message
+                    // Traiter le message reçu
                     String payload = new String(message.getPayload());
-                    System.out.println("Message reçu sur le topic " + receivedTopic + ": " + payload);
-
+                    System.out.println("Message reçu, Topic: " + receivedTopic + ", Message: " + payload);
                     if (messageHandler != null) {
-                        messageHandler.accept(payload);  // Appel du handler pour le message
+                        messageHandler.accept(payload);  // Appeler le handler pour traiter le message
                     }
                 }
 
@@ -60,9 +64,23 @@ public class MqttService {
                 }
             });
 
-            System.out.println("Connecté au broker MQTT et abonné au topic : " + topic);
+            System.out.println("Connexion réussie au broker MQTT et abonnement au topic : " + topic);
         } catch (MqttException e) {
-            System.err.println("Erreur lors de l'initialisation de MQTT : " + e.getMessage());
+            System.err.println("Erreur lors de l'initialisation de la connexion MQTT : " + e.getMessage());
+            e.printStackTrace();
+            reconnect(); // Essayer de se reconnecter en cas d'erreur
+        }
+    }
+
+    private void reconnect() {
+        System.out.println("Tentative de reconnexion au broker MQTT...");
+        try {
+            while (!client.isConnected()) {
+                Thread.sleep(5000);  // Attendre 5 secondes avant de tenter une reconnexion
+                connectMqttClient();  // Essayer de se reconnecter
+            }
+        } catch (InterruptedException e) {
+            System.err.println("Erreur lors de la reconnexion : " + e.getMessage());
             e.printStackTrace();
         }
     }
@@ -71,7 +89,7 @@ public class MqttService {
     public void publish(String messageContent) {
         try {
             if (client == null || !client.isConnected()) {
-                initialize();  // S'assurer que la connexion est établie
+                initialize();  // Assurez-vous que la connexion est établie
             }
 
             MqttMessage message = new MqttMessage(messageContent.getBytes());

@@ -2,21 +2,20 @@ package com.componentware.wasserdatabase.controller;
 
 import com.componentware.wasserdatabase.entity.Auftrag;
 import com.componentware.wasserdatabase.entity.AuftragType;
-import com.componentware.wasserdatabase.service.AuftragsService;
+import com.componentware.wasserdatabase.entity.User;
 import com.componentware.wasserdatabase.service.TransportService;
+import com.componentware.wasserdatabase.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
-@RequestMapping("/api/auftrag")
-public class AuftragController {
+@RequestMapping("/api/user")
+public class UserController {
 
     @Autowired
     private TransportService transportService;
     @Autowired
-    private AuftragsService auftragService;
+    private UserService userService;
     @PostMapping("/process")
     public String processAuftrag(@RequestBody Auftrag auftrag) {
         if (auftrag.getType().equals(AuftragType.TRANSPORT.name())) {
@@ -29,13 +28,14 @@ public class AuftragController {
             return e.getMessage();
         }
     }
-    @GetMapping("/user/{userId}")
-    public List<Auftrag> getAuftrageByUser(@PathVariable Long userId) {//bagination von webpage
-        return auftragService.getAuftragByUserId(userId);
-    }
-    @GetMapping("/type/{type}")
-    public List<Auftrag> getAuftrageByType(@PathVariable String type) {
-        return auftragService.getAuftragByType(type);
+    @GetMapping("/info/{email}")
+    public User getUserInfo(@PathVariable String email) {
+        // Récupérer l'utilisateur par email
+        User user = userService.findByEmail(email);  // Implémenter findByEmail dans UserService
+        if (user == null) {
+            throw new RuntimeException("Utilisateur non trouvé avec l'email: " + email);
+        }
+        return user;
     }
 }
 

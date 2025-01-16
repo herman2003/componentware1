@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 
 @Builder
 @Entity
-@AllArgsConstructor  //generaze un contructeur de maniere automatique sans ecrire
+@AllArgsConstructor
 @NoArgsConstructor
 @Table(name="Nachricht")
 public class Nachricht {
@@ -23,13 +23,13 @@ public class Nachricht {
 	@Column
 	private float wasserstand;
 	@ManyToOne
-	@JoinColumn(name = "sensorSender_id", nullable = false)
-	private SensorSender sensorSender;
-	public Nachricht(LocalDateTime timestamp, String Status, String info, SensorSender sensorSender, float wasserstand) {
+	@JoinColumn(name = "sender_id", nullable = false)
+	private Sender sender;
+	public Nachricht(LocalDateTime timestamp, String Status, String info, Sender sender, float wasserstand) {
 		this.timestamp = timestamp;
 		this.Status = Status;
 		this.info = info;
-		this.sensorSender = sensorSender;
+		this.sender = sender;
 		this.wasserstand = wasserstand;
 	}
 
@@ -55,16 +55,6 @@ public class Nachricht {
 
 	public void setInfo(String info) {
 		this.info = info;
-	}
-
-
-
-	public SensorSender getSensorSender() {
-		return sensorSender;
-	}
-
-	public void setSensorSender(SensorSender sensorSender) {
-		this.sensorSender = sensorSender;
 	}
 	public float getWasserstand() {
 		return wasserstand;

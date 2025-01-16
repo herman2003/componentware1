@@ -20,6 +20,14 @@ public abstract class Produkt {
     public Produkt() {
     }
 
+    public void setPreis(double preis) {
+        this.preis = preis;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     @Override
   public String toString() {
       return "Produkt [name=" + name + ", preis=" + preis + ", id=" + id + "]";
