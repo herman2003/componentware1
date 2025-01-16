@@ -8,6 +8,8 @@ import com.componentware.wasserdatabase.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/user")
 public class UserController {
@@ -36,6 +38,26 @@ public class UserController {
             throw new RuntimeException("Utilisateur non trouvé avec l'email: " + email);
         }
         return user;
+    }
+
+
+
+
+    //getalle users
+    @GetMapping("/all")
+    public List<User> getAllUsers() {
+        return userService.findAllUsers();
+    }
+    //add user
+    @PostMapping("/add")
+    public User addUser(@RequestBody User user) {
+
+            User createdUser = userService.addUser(user);
+
+            if (createdUser == null) {
+                throw new RuntimeException("Error" + user);
+            }
+            return createdUser;
     }
 }
 

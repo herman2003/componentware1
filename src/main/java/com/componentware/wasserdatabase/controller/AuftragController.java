@@ -33,9 +33,16 @@ public class AuftragController {
     public List<Auftrag> getAuftrageByUser(@PathVariable Long userId) {//bagination von webpage
         return auftragService.getAuftragByUserId(userId);
     }
-    @GetMapping("/type/{type}")
+    @GetMapping("/type/{type}") //
     public List<Auftrag> getAuftrageByType(@PathVariable String type) {
         return auftragService.getAuftragByType(type);
     }
+
+    //getalle Aufträge
+    @GetMapping("/all")
+    public List<Auftrag> getAllAuftraege(){
+        return auftragService.findAllAuftraege();
+    }
+
 }
 

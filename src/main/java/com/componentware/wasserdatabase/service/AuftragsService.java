@@ -24,4 +24,8 @@ public class AuftragsService {
     public void auftragsberarbeiten(Auftrag auftrag) {
         // Code pour traiter un Auftrag
     }
+public List<Auftrag> findAllAuftraege(){
+        return auftragRepository.findAll();
+}
+
 }

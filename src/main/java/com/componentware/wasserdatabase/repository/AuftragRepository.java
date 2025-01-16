@@ -8,10 +8,12 @@ import org.springframework.data.repository.CrudRepository;
 import java.util.List;
 import java.util.Optional;
 
-public interface AuftragRepository extends CrudRepository<Auftrag, Long> {
+public interface AuftragRepository extends CrudRepository <Auftrag, Long> {
     Optional<Auftrag> findTopByTypeOrderByDateDesc(String type);
 
     List<Auftrag> findAuftragByUser_Id(Long userId);
 
     List<Auftrag> findAuftragByType(String type);
+    List<Auftrag> findAll();
+
 }

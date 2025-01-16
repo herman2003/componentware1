@@ -17,7 +17,7 @@ public class DataInitializationUserService implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        String defaultName = "Admin User";
+        String defaultName = "User";
         String defaultEmail = "admin@example.com";
         String defaultDescription = "Default administrator account";
         String defaultPassword = "admin123"; // Hachez ce mot de passe dans un environnement de production
