@@ -20,7 +20,10 @@ public class NachrichtController {
     private TransportService transportService;
     // Récupérer toutes les Nachrichten associées à un Sender par son ID
     @GetMapping("/sender/{senderId}")
-    public List<Nachricht> getNachrichtenBySender(@PathVariable Long senderId) {
+    public List<Nachricht> getNachrichtenBySender(@PathVariable(required = false) Long senderId) {
+        if (senderId == null) {
+            senderId = 1L;
+        }
         // Récupérer le Sender par son ID
         Sender sender = new Sender();
         sender.setId(senderId);
