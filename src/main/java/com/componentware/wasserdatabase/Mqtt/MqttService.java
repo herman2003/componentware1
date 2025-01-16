@@ -79,7 +79,7 @@ public class MqttService {
         System.out.println("Tentative de reconnexion au broker MQTT...");
         try {
             while (!client.isConnected()) {
-                Thread.sleep(5000);  // Attendre 5 secondes avant de tenter une reconnexion
+                Thread.sleep(30000);  // Attendre 5 secondes avant de tenter une reconnexion
                 connectMqttClient();  // Essayer de se reconnecter
             }
         } catch (InterruptedException e) {
