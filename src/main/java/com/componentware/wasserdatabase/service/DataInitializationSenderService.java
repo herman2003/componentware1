@@ -29,7 +29,10 @@ public class DataInitializationSenderService implements CommandLineRunner {
         if (defaultUser == null) {
             throw new RuntimeException("Aucun utilisateur trouvé. Veuillez initialiser un utilisateur.");
         }
-
+        if (senderRepository.existsByUser(defaultUser)) {
+            System.out.println("Les Senders pour l'utilisateur par défaut existent déjà.");
+            return;
+        }
         // Créer 5 Senders pour l'utilisateur
         Random random = new Random();
         for (int i = 1; i <= 5; i++) {
@@ -38,7 +41,7 @@ public class DataInitializationSenderService implements CommandLineRunner {
 
             // Charger les premiers capteurs et containers
             Sensor sensor = sensorRepository.getFirstById(31L);
-            Container container = containerRepository.getFirstById(1L);
+            Container container = containerRepository.getFirstById(1L+i);
 
             // Créer un nouveau Sender pour cet utilisateur
             Sender sender = new Sender(null, location, minimalStand, sensor, defaultUser, container);

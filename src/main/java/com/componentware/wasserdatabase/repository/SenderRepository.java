@@ -8,6 +8,6 @@ import java.util.List;
 
 public interface SenderRepository extends CrudRepository<Sender,Integer> {
     Sender findTopByOrderByIdDesc();
-
+    boolean existsByUser(User user);
     List<Sender> findSendersByUser(User user);
 }

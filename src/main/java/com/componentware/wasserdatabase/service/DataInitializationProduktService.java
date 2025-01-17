@@ -32,17 +32,24 @@ public class DataInitializationProduktService implements CommandLineRunner {
     public void run(String... args) throws Exception {
         Random random = new Random();
 
-        // Insérer 30 objets Container
-        for (int i = 1; i <= 30; i++) {
-            double volume = 50.0 + random.nextDouble() * 150.0; // Volume entre 50 et 200
-            Container container = new Container("Container" + i, 100.0 + random.nextDouble() * 50.0, volume);
-            containerRepository.save(container);
-            System.out.println("Container inséré : " + container);
+        // Vérifiez si des Containers existent déjà
+        if (containerRepository.count() > 0) {
+            System.out.println("Containers déjà initialisés.");
+        } else {
+            // Insérer 30 objets Container
+            for (int i = 1; i <= 30; i++) {
+                double volume = 50.0 + random.nextDouble() * 150.0; // Volume entre 50 et 200
+                Container container = new Container("Container" + i, 100.0 + random.nextDouble() * 50.0, volume);
+                containerRepository.save(container);
+                System.out.println("Container inséré : " + container);
+            }
         }
 
-        // Insérer 30 objets Sensor
-        for (int i = 1; i <= 30; i++) {
-            Sensor sensor = new Sensor("Sensor" + i, 200.0 + random.nextDouble() * 100.0);
+        // Vérifiez si un Sensor existe déjà
+        if (sensorRepository.count() > 0) {
+            System.out.println("Sensors déjà initialisés.");
+        } else {
+            Sensor sensor = new Sensor("Sensor1", 200.0 + random.nextDouble() * 100.0);
             sensorRepository.save(sensor);
             System.out.println("Sensor inséré : " + sensor);
         }
