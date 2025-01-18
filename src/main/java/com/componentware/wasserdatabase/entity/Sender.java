@@ -39,6 +39,13 @@ public class Sender {//Container mit Sensor
         this.user = user;
         this.container = container;
     }
+    public Sender( String location, float minimalStand, Sensor sensor, User user, Container container) {
+        this.location = location;
+        this.minimalStand = minimalStand;
+        this.sensor = sensor;
+        this.user = user;
+        this.container = container;
+    }
     public Sender() {
     }
     public Long getId() {
