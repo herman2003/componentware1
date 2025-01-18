@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 @Entity
 @DiscriminatorValue("SENSOR")
 public class Sensor extends Produkt {
-  private String Nr;
 
   public Sensor(String name, double preis) {
       super(name, preis);

@@ -29,8 +29,12 @@ public class SenderController {
         return senderService.findSendersByUser(user);
     }
     @PostMapping("/add/{userId}")
-    public Sender addSenderToUser(@PathVariable Long userId, @RequestBody Sender sender) {
-        return senderService.addSenderToUser(userId, sender);
+    public Sender addSenderToUser(@PathVariable Long userId,
+                                  @RequestParam String location,
+                                  @RequestParam float minimalStand,
+                                  @RequestParam Long sensorId,
+                                  @RequestParam Long containerId) {
+        return senderService.addSenderToUser(userId, sensorId,location,containerId,minimalStand);
     }
     @DeleteMapping("/delete/{senderId}")
     public String deleteSender(@PathVariable Long senderId) {
