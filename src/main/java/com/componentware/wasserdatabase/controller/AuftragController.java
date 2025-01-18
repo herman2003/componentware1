@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/auftrag")
+@RequestMapping("/api/auftrag1")
 public class AuftragController {
     @Autowired
     private NachrichtService nachrichtService;

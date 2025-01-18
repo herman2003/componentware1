@@ -5,10 +5,10 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 
-@Builder
-@Entity
-@AllArgsConstructor
+
+@Setter
 @NoArgsConstructor
+@Entity
 @Table(name="Nachricht")
 public class Nachricht {
 	@Id
@@ -32,7 +32,9 @@ public class Nachricht {
 		this.sender = sender;
 		this.wasserstand = wasserstand;
 	}
+	public Nachricht(){
 
+	}
 	public LocalDateTime getTimestamp() {
 		return timestamp;
 	}

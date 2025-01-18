@@ -30,7 +30,7 @@ public class NachrichtController {
 
 
         // Retourner la liste des Nachrichten
-        return nachrichten.stream().findFirst().orElse(null);
+        return nachrichten.get(nachrichten.size()-1);
     }
 
     @PostMapping("/process")

@@ -113,7 +113,7 @@ public class MqttService {
     }
     private void retryPublish(String messageContent) {
         try {
-            Thread.sleep(120000);  // Attendre 500 ms avant de réessayer
+            Thread.sleep(1000);  // Attendre 500 ms avant de réessayer
             publish(messageContent);  // Réessayer de publier le message
         } catch (InterruptedException e) {
             System.err.println("Le délai de réessai a été interrompu.");

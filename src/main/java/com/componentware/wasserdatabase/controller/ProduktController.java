@@ -59,5 +59,5 @@ public Produkt getProduktById(@PathVariable Long id) {
 public List<Produkt> getAllProdukt() {
     return produktService.getAllProdukt();
 }}
-//ajouter une methode pour ajouter,supprimer,modifier un product en fonction du id
+
 
