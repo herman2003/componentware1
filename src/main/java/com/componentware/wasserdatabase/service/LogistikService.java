@@ -102,8 +102,8 @@ public class LogistikService {
 
             auftragRepository.save(newAuftrag);
             try {
-                System.out.println("Pause von 1 Minuten");
-                Thread.sleep(60 * 500); // 60 000 ms = 1 minute
+                System.out.println("Pause von 3 Minuten");
+                Thread.sleep(1000); // 60 000 ms = 1 minute
             } catch (InterruptedException e) {
                 System.err.println("Problem mit der Pause von 1 MInuten" + e.getMessage());
                 Thread.currentThread().interrupt(); // Réinterrompre le thread si nécessaire
