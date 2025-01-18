@@ -2,7 +2,9 @@ package com.componentware.wasserdatabase.controller;
 
 import com.componentware.wasserdatabase.entity.Auftrag;
 import com.componentware.wasserdatabase.entity.AuftragType;
+import com.componentware.wasserdatabase.entity.Nachricht;
 import com.componentware.wasserdatabase.service.AuftragsService;
+import com.componentware.wasserdatabase.service.NachrichtService;
 import com.componentware.wasserdatabase.service.TransportService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -12,7 +14,8 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/auftrag")
 public class AuftragController {
-
+    @Autowired
+    private NachrichtService nachrichtService;
     @Autowired
     private TransportService transportService;
     @Autowired
@@ -43,6 +46,22 @@ public class AuftragController {
     public List<Auftrag> getAllAuftraege(){
         return auftragService.findAllAuftraege();
     }
+    @GetMapping("/allnachricht")
+    public List<Nachricht> getAllNachrichten(){
+        return nachrichtService.findAll();
+    }
+    @GetMapping("/sender/{senderId}")
+    public Nachricht getNachrichtenBySender(@PathVariable(required = false) Long senderId) {
+        if (senderId == null) {
+            senderId = 1L;
+        }
 
+        // Utiliser le service pour récupérer les Nachrichten liées à ce Sender
+        List<Nachricht> nachrichten = nachrichtService.findBySender(senderId);
+
+
+        // Retourner la liste des Nachrichten
+        return nachrichten.stream().findFirst().orElse(null);
+    }
 }
 
