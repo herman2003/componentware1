@@ -18,4 +18,8 @@ public class NachrichtService {
     public List<Nachricht> findBySender(long sender_id) {
         return nachrichtRepository.findAllBySender_Id(sender_id); // Méthode dans le repository
     }
+    public List<Nachricht> findAll() {
+        return nachrichtRepository.findAll(); // Méthode dans le repository
+    }
+
 }

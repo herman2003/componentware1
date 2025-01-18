@@ -8,6 +8,7 @@ import java.util.List;
 
 
 public interface NachrichtRepository extends CrudRepository<Nachricht, Long> {
+    List<Nachricht> findAll();
     List<Nachricht> findAllBySender_Id(long sender_id);
     List<Nachricht> findNachrichtBySender(Sender sender);
 

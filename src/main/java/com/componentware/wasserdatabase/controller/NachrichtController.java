@@ -45,5 +45,10 @@ public class NachrichtController {
             return e.getMessage();
         }
     }
+    //getalle Aufträge
+    @GetMapping("/all")
+    public List<Nachricht> getAllNachrichten(){
+        return nachrichtService.findAll();
+    }
 }
 
