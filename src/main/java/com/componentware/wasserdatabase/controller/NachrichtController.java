@@ -24,12 +24,9 @@ public class NachrichtController {
         if (senderId == null) {
             senderId = 1L;
         }
-        // Récupérer le Sender par son ID
-        Sender sender = new Sender();
-        sender.setId(senderId);
 
         // Utiliser le service pour récupérer les Nachrichten liées à ce Sender
-        List<Nachricht> nachrichten = nachrichtService.findBySender(sender);
+        List<Nachricht> nachrichten = nachrichtService.findBySender(senderId);
 
 
         // Retourner la liste des Nachrichten

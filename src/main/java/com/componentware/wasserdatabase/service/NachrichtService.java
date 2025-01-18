@@ -15,7 +15,7 @@ public class NachrichtService {
     private NachrichtRepository nachrichtRepository; // Repository pour les Nachrichten
 
     // Récupérer toutes les Nachrichten liées à un Sender
-    public List<Nachricht> findBySender(Sender sender) {
-        return nachrichtRepository.findNachrichtBySender(sender); // Méthode dans le repository
+    public List<Nachricht> findBySender(long sender_id) {
+        return nachrichtRepository.findAllBySender_Id(sender_id); // Méthode dans le repository
     }
 }
